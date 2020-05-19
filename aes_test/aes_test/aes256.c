@@ -85,15 +85,15 @@ int AddRoundKey(int round) {
 	return 0;
 }
 
-int KeyExpansion(unsigned char cipherkey[]) { //cipherkey 총 128bit / 하나당 8bit
-	// AES 128 경우 roundkey : 44word , 256인 경우 : 60word
+int KeyExpansion(unsigned char cipherkey[]) { //cipherkey 총 256bit / 하나당 8bit
+	// AES 128 경우 round : 44 , 256인 경우 : 60
 	int indic = 0;
 	unsigned char temp[4];
 	unsigned char t;
-	unsigned char Rcon[11] = { 0x8D, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36 };
+	unsigned char Rcon[8] = { 0x8D, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40 };
 	// Rcon : Round 상수
 	// Rcon[0] -> 무의미한것
-	// @@@@@
+	
 	while (indic < 8) { // 
 		for (int j = 0; j < 4; j++) {
 			roundkey[4 * indic + j] = cipherkey[4 * indic + j];
