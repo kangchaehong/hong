@@ -115,6 +115,13 @@ int KeyExpansion(unsigned char cipherkey[]) { //cipherkey ÃÑ 256bit / ÇÏ³ª´ç 8bi
 			temp[3] = sbox[(t & 0xF0) >> 4][t & 0x0F];
 			temp[0] = temp[0] ^ Rcon[indic / 8];
 		}
+		else if (indic % 8 == 4) {
+			temp[0] = sbox[temp[0]];
+			temp[1] = sbox[temp[1]];
+			temp[2] = sbox[temp[2]];
+			temp[3] = sbox[temp[3]];
+		}
+		}
 		for (int j = 0; j < 4; j++) {
 			roundkey[4 * indic + j] = roundkey[4 * (indic - 8) + j] ^ temp[j];
 		}
