@@ -22,7 +22,7 @@ static unsigned char sbox[16][16] = {
 
 static unsigned char encrypt[4][4];
 unsigned char encrypted_msg[16];
-static unsigned char roundkey[176]; //@@@
+static unsigned char roundkey[240];
 int i, j;
 
 int SubBytes() {
@@ -109,14 +109,14 @@ int KeyExpansion(unsigned char cipherkey[]) { //cipherkey 총 256bit / 하나당 8bi
 		}
 		if (indic % 8 == 0) {
 			t = temp[0];
-			temp[0] = sbox[(temp[1] & 0xF0) >> 4][temp[1] & 0x0F];
+			temp[0] = sbox[(temp[1] & 0xF0) >> 4][temp[1] & 0x0F]; // 4바이트 회전 출력으로 리턴하기 위해 >>4 사용
 			temp[1] = sbox[(temp[2] & 0xF0) >> 4][temp[2] & 0x0F];
 			temp[2] = sbox[(temp[3] & 0xF0) >> 4][temp[3] & 0x0F];
 			temp[3] = sbox[(t & 0xF0) >> 4][t & 0x0F];
-			temp[0] = temp[0] ^ Rcon[indic / 4];
+			temp[0] = temp[0] ^ Rcon[indic / 8];
 		}
 		for (int j = 0; j < 4; j++) {
-			roundkey[4 * indic + j] = roundkey[4 * (indic - 4) + j] ^ temp[j];
+			roundkey[4 * indic + j] = roundkey[4 * (indic - 8) + j] ^ temp[j];
 		}
 		indic = indic + 1;
 	}
